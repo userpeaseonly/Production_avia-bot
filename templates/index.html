@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test view</title>
+</head>
+<body>
+    <div class="container">
+        {% for new in news %}
+        <div>
+            <img src="{{new.image.url}}">
+            <h2>{{new.title}}</h2>
+            <h4>{{new.subtitle}}</h4>
+            <p>{{new.text}}</p>
+            <p>{{new.created_at}}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <style>
+
+    </style>
+</body>
+</html>

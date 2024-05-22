@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 core.wsgi
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    restart: always
+    expose:
+      - 8000
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    volumes:
+      - static_volume:/app/static
+      - media_volume:/app/media
+    ports:
+      - "8080:80"
+    depends_on:
+      - web
+    restart: always
+
+  db:
+    image: postgres:14.5
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+
+volumes:
+  static_volume:
+  media_volume:
+  db_data:
